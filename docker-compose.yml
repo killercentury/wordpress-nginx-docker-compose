@@ -1,0 +1,21 @@
+wordpress:
+  image: wordpress:fpm
+  links:
+    - mysql
+  env_file:
+    - .env.dev
+mysql:
+  image: mysql
+  volumes_from:
+    - 'mysql-dev-data'
+nginx:
+  image: nginx
+  ports:
+    - '80:80'
+  links:
+    - wordpress
+  volumes:
+    - 'nginx.virtualbox.conf:/etc/nginx/nginx.conf'
+    - 'server.conf:/etc/nginx/conf.d/default.conf'
+  volumes_from:
+    - wordpress
